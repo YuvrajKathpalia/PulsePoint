@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const User = require('../models/User.js');
 const auth = require("../middleware/Auth.js")
 
 // Get user profile
 router.get('/profile', auth, async (req, res) => {
+  
   const user = await User.findById(req.user.id);
   res.json(user);
 });
