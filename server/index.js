@@ -19,9 +19,11 @@ mongoose.connect(uri)
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const newsRoutes = require('./routes/news');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/news', newsRoutes);
 
 const port = process.env.PORT || 5000;
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Registerr = () => {
@@ -9,6 +9,11 @@ const Registerr = () => {
   const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,12 +56,12 @@ const Registerr = () => {
 
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold">Register</h2>
+      <h2 className="text-2xl font-bold ml-5">Register</h2>
 
       {error && <p className="text-red-500">{error}</p>}
       {message && <p className="text-green-500">{message}</p>}
 
-      <form className="mt-4" onSubmit={handleSubmit}>
+      <form className="mt-4 ml-5" onSubmit={handleSubmit}>
         <label className="block mb-2">
           Username:
           <input
@@ -65,6 +70,7 @@ const Registerr = () => {
             onChange={(e) => setUsername(e.target.value)}
             className="w-full p-2 border rounded"
             required
+            autoComplete="off" 
           />
         </label>
         <label className="block mb-2">
@@ -75,6 +81,7 @@ const Registerr = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-2 border rounded"
             required
+            autoComplete="off" 
           />
         </label>
         <label className="block mb-2">

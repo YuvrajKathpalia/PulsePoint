@@ -1,0 +1,33 @@
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f2937; 
+    padding: 1rem;
+  }
+  
+  .logo {
+    height: 2.5rem; 
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar a:hover {
+    background-color: #4b5563; 
+    padding: 0.5rem;
+    border-radius: 0.25rem; 
+  }
+  
+  .navbar .brand-name {
+    font-size: 1.25rem; 
+    font-weight: bold;
+    margin-left: 0.5rem;
+  }
+  
+  
+  

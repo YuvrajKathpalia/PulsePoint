@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -8,6 +8,14 @@ const Login = () => {
   const [token, setToken] = useState('');
 
   const navigate = useNavigate();
+
+
+  //clears input fields on mount, preventing autofilled data on login/registration pages.
+  
+  useEffect(() => {   
+    setEmail('');
+    setPassword('');
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +32,14 @@ const Login = () => {
       if (response.ok) {
         setToken(data.token);
         setError('');
+
         localStorage.setItem('authToken', data.token);
         navigate('/profile'); // Redirect to profile page after login
-      } else {
+
+        setEmail('');  
+        setPassword('');
+      } 
+      else {
         setError(data.msg);
       }
     } catch (err) {
@@ -37,9 +50,9 @@ const Login = () => {
 
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold">Login</h2>
+      <h2 className="text-2xl font-bold ml-5">Login</h2>
       {error && <p className="text-red-500">{error}</p>}
-      <form className="mt-4" onSubmit={handleSubmit}>
+      <form className="mt-4 ml-5" onSubmit={handleSubmit}>
         <label className="block mb-2">
           Email:
           <input
@@ -48,6 +61,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-2 border rounded"
             required
+            autoComplete="off" 
           />
         </label>
         <label className="block mb-2">
@@ -58,6 +72,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 border rounded"
             required
+            autoComplete="off" 
           />
         </label>
         <button

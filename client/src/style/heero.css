@@ -1,0 +1,67 @@
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 80vh; /* Full viewport height minus padding */
+    background-color: #007bff; /* Bright background color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay for better text visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero-content {
+    text-align: center;
+    color: #ffffff; /* White text color for contrast */
+    z-index: 1;
+  }
+  
+  .hero-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .hero-logo {
+    width: 120px; /* Adjust size as needed */
+    border-radius: 50%; /* Circular logo */
+    border: 5px solid #ffffff; /* White border to stand out */
+    padding: 10px;
+  }
+  
+  .hero-title {
+    font-size: 3rem; /* Larger font size for prominence */
+    margin-bottom: 10px;
+  }
+  
+  .hero-slogan {
+    font-size: 1.5rem; /* Slightly larger slogan */
+    margin-bottom: 20px;
+  }
+  
+  .hero-button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    color: #ffffff;
+    background-color: #ffffff; /* White button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .hero-button:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+  }
+  

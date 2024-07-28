@@ -1,20 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../style/navbar.css'; 
 
-const Navbar = () => (
-  <nav className="bg-blue-500 p-4">
-    <div className="container mx-auto flex justify-between items-center">
-      <h1 className="text-white text-lg">News App</h1>
-      <div>
-        <Link to="/" className="text-white mr-4">Home</Link>
-        <Link to="/login" className="text-white mr-4">Login</Link>
-        <Link to="/register" className="text-white mr-4">Register</Link>
-        <Link to="/profile" className="text-white">Profile</Link>
+const Navbar = () => {
+  return (
+    <nav className="navbar bg-gray-800 p-4 flex items-center justify-between">
+      <div className="flex items-center">
+        <img src="/favii.png" alt="PulsePoint Logo" className="logo h-10 mr-2" /> {/* Logo */}
+        <Link to="/" className="text-white text-xl font-bold">PulsePoint</Link> {/* Brand Name */}
       </div>
-    </div>
-  </nav>
-);
+      <div className="flex space-x-4">
+        <Link to="/" className="text-white hover:bg-gray-700 p-2 rounded">Home</Link>
+        <Link to="/register" className="text-white hover:bg-gray-700 p-2 rounded">Register</Link>
+        <Link to="/login" className="text-white hover:bg-gray-700 p-2 rounded">Login</Link>
+        <Link to="/profile" className="text-white hover:bg-gray-700 p-2 rounded">Profile</Link>
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;
+
+
+
+
+
+
 
 
