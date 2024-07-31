@@ -1,64 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
+import '../style/profile.css';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState('');
-
+  const token = localStorage.getItem('token'); 
+  const navigate = useNavigate(); 
   useEffect(() => {
-
-
-    const fetchProfile = async () => {
-
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setError('No token found, please login');
-        return;
-      }
-
+    const fetchUserData = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/users/profile', {
-          method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`, 
           },
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-          throw new Error('Failed to fetch profile');
+          throw new Error(data.msg || 'Failed to fetch user data');
         }
 
-        const data = await response.json();
         setUser(data);
-      } 
-      
-      catch (err) {
-        console.error(err);
-        setError('Failed to fetch profile');
+      } catch (error) {
+        console.error('Error fetching user data:', error);
       }
     };
 
-    fetchProfile();
-  }, []);
+    if (token) {
+      fetchUserData();
+    }
+  }, [token]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    navigate('/');
+  };
 
   return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-bold">Profile</h2>
-
-      {error && <p className="text-red-500">{error}</p>}
-      
+    <div className="profile-container">
+      <h1 className="profile-header">User Profile</h1>
       {user ? (
-        <div>
+        <div className="profile-info">
           <p>Username: {user.username}</p>
           <p>Email: {user.email}</p>
         </div>
-      ) : 
-      (
-        <p>Loading...</p>
+      ) : (
+        <p>No user data found</p>
       )}
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };
 
 export default Profile;
+
+
+
+
+
+

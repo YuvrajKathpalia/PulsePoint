@@ -1,21 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../style/navbar.css'; 
 
+
+import accountimg from '../assets/AccountImg.png';
+
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleMyAccountClick = () => {
+    const token = localStorage.getItem('token'); 
+
+    if (token) {
+      navigate('/profile'); 
+    } else {
+      alert('Please sign in first'); 
+    }
+  };
+
   return (
-    <nav className="navbar bg-gray-800 p-4 flex items-center justify-between">
-      <div className="flex items-center">
-        <img src="/favii.png" alt="PulsePoint Logo" className="logo h-10 mr-2" /> {/* Logo */}
-        <Link to="/" className="text-white text-xl font-bold">PulsePoint</Link> {/* Brand Name */}
+    <div>
+     
+      <div className="navbar1">
+        <img src="/favii.png" alt="PulsePoint Logo" className="logo" />
+        <div className="heading-container">
+          <h1 className="heading">PulsePoint</h1>
+          <p className="slogan">YOUR PERSONAL NEWS BEAT</p>
+        </div>
       </div>
-      <div className="flex space-x-4">
-        <Link to="/" className="text-white hover:bg-gray-700 p-2 rounded">Home</Link>
-        <Link to="/register" className="text-white hover:bg-gray-700 p-2 rounded">Register</Link>
-        <Link to="/login" className="text-white hover:bg-gray-700 p-2 rounded">Login</Link>
-        <Link to="/profile" className="text-white hover:bg-gray-700 p-2 rounded">Profile</Link>
+      
+      
+      <div className="navbar2">
+        <div className="nav-links">
+          <Link to="/news/business">Business</Link>
+          <Link to="/news/entertainment">Entertainment</Link>
+          <Link to="/news/general">General</Link>
+          <Link to="/news/health">Health</Link>
+          <Link to="/news/science">Science</Link>
+          <Link to="/news/sports">Sports</Link>
+          <Link to="/news/technology">Technology</Link>
+        </div>
+        
+        <div className="button-container">
+          <Link to="/subscribe" className="button">Subscribe</Link>
+          <Link to="/signin" className="button">Sign In</Link>
+        </div>
       </div>
-    </nav>
+
+      
+      <button onClick={handleMyAccountClick} className="icon-button">
+        <img src={accountimg} alt="Account" className="account-icon" />
+        <span className="icon-text">My Account</span>
+      </button>
+    </div>
   );
 };
 
