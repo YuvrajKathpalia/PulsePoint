@@ -7,6 +7,7 @@ import Register from './pages/Registerr';
 import Profile from './pages/profile';
 import Navbar from './components/Navbar';
 import Categories from './pages/Categories';
+import MoreArticles from './pages/MoreArticles';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/news/:category" element={<Categories />} />
+        <Route path="/more-articles/:category" element={<MoreArticles />} />
+
       </Routes>
     </Router>
   );
