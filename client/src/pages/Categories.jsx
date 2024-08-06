@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom'; 
+import { saveArticle, unsaveArticle, shareArticleOnWhatsApp, shareArticleOnTwitter, shareArticleOnInstagram, shareArticleOnFacebook } from '../components/Articlefun';
+import { FaBookmark, FaRegBookmark, FaShareAlt, FaWhatsapp, FaTwitter, FaInstagram, FaFacebook } from 'react-icons/fa';
+
 
 
 const formatDate = (dateString) => {
@@ -13,6 +16,12 @@ const Categories = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showShareOptions, setShowShareOptions] = useState(null);
+  const [savedArticles, setSavedArticles] = useState([]);
+  const [savingError, setSavingError] = useState(null);
+  const [unsavingError, setUnSavingError] = useState(null);
+
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -32,8 +41,74 @@ const Categories = () => {
       }
     };
 
+
+    const fetchSavedArticles = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/articles/saved-articles', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setSavedArticles(data);
+        }
+      } catch (error) {
+        console.error('Error fetching saved articles:', error);
+      }
+    };
+
     fetchNews();
-  }, [category]); 
+    fetchSavedArticles();
+
+  }, [category , token]); 
+
+
+
+  
+  const handleSaveArticle = async (article) => {
+    if (!token) {
+      alert('Please sign in first');
+      return;
+    }
+    try {
+      const isSaved = isArticleSaved(article);
+      if (isSaved) {
+        alert('Article already saved');
+      } else {
+        await saveArticle(article);
+        fetchSavedArticles(); // Refresh saved articles
+      }
+    } catch (error) {
+      console.error('Error saving article:', error);
+      setSavingError('Failed to save article.');
+    }
+  };
+
+
+
+  const handleUnsaveArticle = async (article) => {
+    try {
+      await unsaveArticle(article);
+      fetchSavedArticles(); // Refresh saved articles
+    } catch (error) {
+      console.error('Error unsaving article:', error);
+      setUnSavingError('Failed to unsave article.');
+    }
+  };
+
+
+
+  const isArticleSaved = (article) => {
+    return savedArticles.some(saved => saved.title === article.title);
+  };
+
+
+  const toggleShareOptions = (index) => {
+    setShowShareOptions(showShareOptions === index ? null : index);
+  };
+
+
 
   if (loading) return <div className="p-6 text-center">Loading...</div>;
   if (error) return <div className="p-6 text-center text-red-700">{error}</div>;
@@ -43,21 +118,25 @@ const Categories = () => {
 //changed layout
 
   return (
+     
     <div className="flex p-4 overflow-hidden">
-      {/* Left Layout */}
-      <div className="w-2/3 pr-6">
-        {articles.slice(0, 10).map((article, index) => (
+    {/* Left Layout */}
+    <div className="w-2/3 pr-6">
+      {articles.slice(0, 10).map((article, index) => (
+        <div
+          key={index}
+          className="relative bg-white rounded-lg shadow-lg mb-4 p-4 h-[300px] hover:bg-gray-100"
+        >
           <a
-            key={index}
             href={article.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block bg-white rounded-lg shadow-lg mb-4 p-4 h-[300px] hover:bg-gray-100 "
+            className="block h-full"
           >
             <div className="flex flex-col sm:flex-row h-full">
               <div className="sm:w-1/3 mb-4 sm:mb-0">
                 <img
-                  src={article.urlToImage }
+                  src={article.urlToImage } 
                   alt={article.title}
                   className="w-full h-[200px] object-cover rounded-lg"
                 />
@@ -69,8 +148,37 @@ const Categories = () => {
               </div>
             </div>
           </a>
-        ))}
-      </div>
+          {/* Save and Share Buttons */}
+          <div className="absolute bottom-4 left-4 flex space-x-2">
+            <button onClick={() => handleSaveArticle(article)} className={`text-blue-600 hover:text-blue-800 ${isArticleSaved(article) ? 'text-green-500' : ''}`}>
+              {isArticleSaved(article) ? <FaBookmark size={30} /> : <FaRegBookmark size={30} />}
+            </button>
+            <button onClick={() => toggleShareOptions(index)} className="text-blue-600 hover:text-blue-800">
+              <FaShareAlt size={30} />
+            </button>
+            {showShareOptions === index && (
+              <div className="absolute top-12 left-0 bg-black rounded-lg p-3 flex flex-row space-x-2">
+                <button onClick={() => shareArticleOnWhatsApp(article)} className="text-green-500">
+                  <FaWhatsapp size={25} />
+                </button>
+                <button onClick={() => shareArticleOnTwitter(article)} className="text-blue-400">
+                  <FaTwitter size={25} />
+                </button>
+                <button onClick={() => shareArticleOnInstagram(article)} className="text-pink-500">
+                  <FaInstagram size={25} />
+                </button>
+                <button onClick={() => shareArticleOnFacebook(article)} className="text-blue-500">
+                  <FaFacebook size={25} />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+
+       
       
       {/* Right Layout */}
       <div className="w-1/4 pl-7 pr-6">
