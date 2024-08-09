@@ -12,11 +12,26 @@ router.get('/profile', auth, async (req, res) => {
 
 // Update user profile
 
-router.put('/profile', auth, async (req, res) => {
+router.put('/update-profile', auth, async (req, res) => {
+  const { username, email, phone, dob, gender, country, city } = req.body;
 
-  const { username, email } = req.body;
-  const user = await User.findByIdAndUpdate(req.user.id, { username, email }, { new: true });
-  res.json(user);
+  console.log('Received dob:', dob);
+  
+  try {
+
+    const dobDate = dob ? new Date(dob) : undefined;  // Convert dob to dateobject
+
+    const user = await User.findByIdAndUpdate(req.user.id, 
+      { username, email, phone,dob: dobDate , gender, country, city }, 
+      { new: true }
+    );
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ msg: 'Failed to update profile', error: error.message });
+  }
 });
+
+   
+
 
 module.exports = router;

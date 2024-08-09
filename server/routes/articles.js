@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const authenticate = require('../middleware/Auth'); // Middleware for token verification
 
-// save article
+
 router.post('/save-article', authenticate, async (req, res) => {
 
   const { title, urlToImage } = req.body; //extract title,urlimage
@@ -42,12 +42,11 @@ router.delete('/unsave-article', authenticate, async (req, res) => {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    // Check if the article is already saved
-    if (!user.savedArticles.some(article => article.title === title)) {
+    const articleExists = user.savedArticles.some(article => article.title === title);
+    if (!articleExists) {
       return res.status(400).json({ msg: 'Article not saved' });
     }
 
-    // Remove the article from the user's saved articles
     user.savedArticles = user.savedArticles.filter(article => article.title !== title);
     await user.save();
 
@@ -59,9 +58,9 @@ router.delete('/unsave-article', authenticate, async (req, res) => {
 });
 
 
-// Route to get saved articles
+
 router.get('/saved-articles', authenticate, async (req, res) => {
-  const userId = req.user.id; // Get user ID from middleware
+  const userId = req.user.id; 
 
   try {
     const user = await User.findById(userId);

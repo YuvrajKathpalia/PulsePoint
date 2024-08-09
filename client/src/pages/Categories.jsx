@@ -23,7 +23,7 @@ const Categories = () => {
 
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
+  
     const fetchNews = async () => {
       try {
         setLoading(true);
@@ -58,12 +58,12 @@ const Categories = () => {
       }
     };
 
+    
+
+  useEffect(() => {
     fetchNews();
     fetchSavedArticles();
-
-  }, [category , token]); 
-
-
+  }, [category, token]);
 
   
   const handleSaveArticle = async (article) => {
@@ -218,7 +218,7 @@ const Categories = () => {
 export default Categories;
 
 
-{/* //   return (
+/* //   return (
 //     <div className="p-6">
 //       <h1 className="text-2xl font-bold mb-4 capitalize">{category} News</h1>
 //       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -257,4 +257,4 @@ export default Categories;
   
 
 // export default Categories;
- */}
+ */

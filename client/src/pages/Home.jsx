@@ -17,34 +17,52 @@ const Home = () => {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
+  const fetchNews = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:5000/api/news/`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setArticles(data.articles);
+    } catch (error) {
+      setError('Error fetching news');
+      console.error('Error fetching news:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   const fetchSavedArticles = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/articles/saved-articles', {
         headers: {
-          'Authorization': `Bearer ${token}`, 
+          'Authorization': `Bearer ${token}`,
         },
       });
       const data = await response.json();
-      
       if (Array.isArray(data)) {
         setSavedArticles(data);
-      } 
-
+      }
     } catch (error) {
       console.error('Error fetching saved articles:', error);
     }
   };
 
+  
+
+useEffect(() => {
+  fetchNews();
+  fetchSavedArticles();
+}, [token]);
+
   const handleSaveArticle = async (article) => {
-
-    const token = localStorage.getItem('token'); 
-
     if (!token) {
-      alert('Please sign in first'); 
-      navigate('/signin'); 
+      alert('Please sign in first');
       return;
     }
-
     try {
       const isSaved = isArticleSaved(article);
       if (isSaved) {
@@ -58,6 +76,7 @@ const Home = () => {
       setSavingError('Failed to save article.');
     }
   };
+
   const handleUnsaveArticle = async (article) => {
     try {
       await unsaveArticle(article);
@@ -77,30 +96,7 @@ const Home = () => {
   };
 
  
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/news');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-       
-        setArticles(data.articles);
-      } 
-      catch (error) {
-        console.error('Error fetching news:', error);
-        setError('Error fetching news. Please try again later.');
-      }
-      finally {
-        setLoading(false);
-      }
-    };
-
-   
-    fetchNews();
   
-  }, []);
   
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="p-6 text-red-500">{error}</div>;

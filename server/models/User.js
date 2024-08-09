@@ -15,11 +15,26 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  phone: {
+    type: String
+  },
+  dob: {
+    type: Date
+  },
+  gender: {
+    type: String
+  },
+  country: {
+    type: String
+  },
+  city: {
+    type: String
+  },
   savedArticles: [
     {
       title: String,
-      urlToImage: String
+      urlToImage: String,
+      url:String
     }
   ]
 });

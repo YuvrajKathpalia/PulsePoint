@@ -13,7 +13,7 @@ const SignIn = () => {
   const navigate = useNavigate(); 
 
 
-  // Clear formdata when component is mounted
+  
   useEffect(() => {
     
     console.log('SignIn component mounted');
@@ -21,7 +21,7 @@ const SignIn = () => {
       email: '',
       password: '',
     });
-    setError(''); // Clear any existing error message
+    setError(''); 
   }, []);
 
   const handleChange = (e) => {
@@ -49,8 +49,9 @@ const SignIn = () => {
         throw new Error(data.msg || 'Login failed');
       }
 
-      localStorage.setItem('token', data.token); // Store the token in local storage
+      localStorage.setItem('token', data.token); 
       console.log('Login successful:', data);
+      console.log(data.token);
       navigate('/profile');
     } 
     
@@ -62,7 +63,7 @@ const SignIn = () => {
   };
 
   const handleClose = () => {
-    navigate('/'); // Navigate to home page on close
+    navigate('/'); 
   };
 
   return (

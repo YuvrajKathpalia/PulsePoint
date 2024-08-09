@@ -39,10 +39,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   border-top: 2px solid #ddd;
-  max-width: 1200px;
+  width: 75%;
   margin: 0 auto;
+  position: relative;
 }
 
 .navbar2 .nav-links {
@@ -71,7 +72,7 @@
 .navbar2 .button-container a {
   background-color: #2563eb;
   color: white;
-  padding: 0.6rem 1.2rem;
+  padding: 0.76rem 1.8rem;
   border-radius: 0.25rem;
   text-decoration: none;
   font-weight: 700;
